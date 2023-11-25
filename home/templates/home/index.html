@@ -1,0 +1,157 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Get Response Headers</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: black;
+            color: green;
+        }
+        h1 {
+            color: #00ff00;
+            margin-top: 60px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            padding: 8px;
+        }
+        input[type="submit"] {
+            padding: 8px;
+            background-color: #000;
+            color: #00ff00;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Check Results for {{ domain }}</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: black;
+            color: green;
+            margin-top: 20px;
+            text-align: center; /* Center align the content within the body */
+        }
+        h2 {
+            color: #00ff00;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #000;
+            color: #00ff00;
+        }
+        tr:nth-child(even) {
+            background-color: #111;
+        }
+        tr:nth-child(odd) {
+            background-color: #222;
+        }
+        .valid {
+            color: #00ff00;
+        }
+        .invalid {
+            color: #ff0000;
+        }
+        .purple {
+            color: #800080;
+        }
+        a {
+            color: #00ff00;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px;
+            margin-top: 20px;
+            background-color: #000;
+        }
+        a:hover {
+            background-color: #111;
+        }
+        .logo-text {
+            font-size: 90px; /* Adjust the size as needed */
+            font-weight: bold; /* Optional: Make it bold */
+            margin: 10px;
+            margin-bottom: 0px;
+            color: #00ff00;
+            padding-bottom:0px;
+            border-bottom: 0px;
+            /* Add any other styling you desire */
+        }
+        .logo-slogan{
+            margin-top: 0px;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: 108px;
+        }
+        .close-p{
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <p><span class="logo-text">hackme.solutions</span> 
+        <!-- <span class="logo-slogan">hackme.solutions</span> -->
+    </p>
+
+    <form method="POST" action="/">
+        {% csrf_token %}
+        <label for="domain">Scan any domain: </label>
+        <input type="text" name="domain" id="domain" required>
+        <input type="submit" value="Get Headers">
+    </form>
+
+    {% if request.method == 'POST' %}
+    <h2>Security Grade for {{ domain }} is <b class="purple">{{ score }}</b></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Rule Name</th>
+                <th>Implemented</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in data %}
+            <tr>
+                <td>{{ result.rule_name }}</td>
+                <td class="{% if result.rule_implemented %}valid{% else %}invalid{% endif %}">
+                    {% if result.rule_implemented %}✅{% else %}❌{% endif %}
+                </td>
+                <td>{{ result.rule_remarks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <footer>
+        <p class="close-p">For full-scale in-depth security analysis and professional solutions <br /> Contact us: <a href="mailto:contact@hackme.solutions">contact@hackme.solutions</a></p>
+    </footer>
+    <!-- <a href="/" style="margin-top: 20px;">Go back</a> -->
+</body>
+</html>
